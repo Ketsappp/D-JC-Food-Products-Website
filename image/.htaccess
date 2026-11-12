@@ -1,0 +1,16 @@
+# Serve a .webp sibling instead of the .png when the browser supports it (falls back to the PNG).
+# Create the .webp files with tools/optimize_images.py --write
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_ACCEPT} image/webp
+    RewriteCond %{REQUEST_FILENAME} \.png$
+    RewriteCond %{REQUEST_FILENAME} (.+)\.png$
+    RewriteCond %1.webp -f
+    RewriteRule (.+)\.png$ $1.webp [T=image/webp,E=ACCEPT_WEBP:1,L]
+</IfModule>
+<IfModule mod_headers.c>
+    Header append Vary Accept env=ACCEPT_WEBP
+</IfModule>
+<IfModule mod_mime.c>
+    AddType image/webp .webp
+</IfModule>

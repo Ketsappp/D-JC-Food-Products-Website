@@ -1,0 +1,398 @@
+
+/* =====================================
+   RESPONSIVE LAYOUT - D&JC FOOD PRODUCTS
+   ===================================== */
+
+/* Prevent elements from overflowing their containers */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+}
+
+.app-layout {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.main-content {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 16px;
+    width: 100%;
+}
+
+/* Navigation and buttons can wrap when space is limited */
+.top-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.top-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.top-nav .nav-link {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+.account-menu {
+    flex-shrink: 0;
+}
+
+/* Make form controls and modal content fit their containers */
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+}
+
+.modal-card {
+    width: min(92%, 520px);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* ===== Fix Sidebar and Main Content Alignment ===== */
+
+/* Desktop layout */
+@media (min-width: 769px) {
+    .app-layout {
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+        min-height: 100vh;
+        overflow-x: clip;
+    }
+
+    .app-layout > .sidebar {
+        position: relative;
+        inset: auto;
+        transform: none;
+        flex: 0 0 210px;
+        width: 210px;
+        min-width: 210px;
+        max-width: 210px;
+        height: auto;
+        box-sizing: border-box;
+    }
+
+    .app-layout > .main-content {
+        position: relative;
+        flex: 1 1 0;
+        width: 0;
+        min-width: 0;
+        margin-left: 0;
+        box-sizing: border-box;
+    }
+
+    .top-header {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .top-nav {
+        display: flex;
+        flex-wrap: wrap;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .menu-section {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(100%, 200px), 1fr)
+        );
+        gap: 16px;
+    }
+
+    .sidebar-user {
+        width: calc(100% - 24px);
+        margin: 15px 12px 20px;
+        box-sizing: border-box;
+    }
+
+    .sidebar-user-info {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .sidebar-user-name {
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
+    .category-card {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+    .app-layout {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    .app-layout > .sidebar {
+        position: relative;
+        inset: auto;
+        transform: none;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        height: auto;
+        flex: 0 0 auto;
+        box-sizing: border-box;
+    }
+
+    .app-layout > .main-content {
+        position: relative;
+        width: 100%;
+        min-width: 0;
+        margin-left: 0;
+        flex: 1 1 auto;
+        box-sizing: border-box;
+    }
+
+    .category-nav {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .category-card {
+        flex: 0 0 130px;
+        width: 130px;
+    }
+
+    .top-header,
+    .top-nav {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+
+/* Tablet screens */
+@media (max-width: 1024px) {
+    .sidebar {
+        flex-shrink: 0;
+    }
+
+    .main-content {
+        min-width: 0;
+    }
+
+    .top-header {
+        padding: 12px;
+    }
+
+    .top-nav .nav-link {
+        padding: 9px 12px;
+        font-size: 13px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+        gap: 12px;
+    }
+
+    .sidebar-user {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+}
+
+/* Mobile screens */
+@media (max-width: 768px) {
+    .app-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        height: auto;
+        position: relative;
+    }
+
+    .logo-container {
+        padding: 10px;
+    }
+
+    .sidebar-user {
+        margin: 8px 12px;
+    }
+
+    .category-nav {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 8px;
+        width: 100%;
+        padding: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .category-card {
+        flex: 0 0 auto;
+        min-width: 130px;
+        max-width: 190px;
+    }
+
+    .back-admin-container {
+        padding: 8px 12px;
+    }
+
+    .main-content {
+        width: 100%;
+        max-width: 100%;
+        flex: 1 1 auto;
+    }
+
+    .top-header {
+        width: 100%;
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .top-nav {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .top-nav .nav-link {
+        flex: 1 1 auto;
+        min-width: 110px;
+    }
+
+    .account-menu {
+        align-self: flex-end;
+    }
+
+    .menu-section {
+        padding: 14px;
+    }
+
+    .section-title {
+        font-size: 22px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    /* Let the cart appear below the menu on mobile */
+    .order-sidebar {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        height: auto;
+        position: relative;
+        right: auto;
+        bottom: auto;
+    }
+
+    .order-expanded-content {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .cart-items-list {
+        max-height: 35vh;
+        overflow-y: auto;
+    }
+
+    .modal-card {
+        width: calc(100% - 24px);
+        max-width: 520px;
+        padding: 18px;
+    }
+
+    .modal-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .modal-actions button {
+        flex: 1 1 120px;
+    }
+}
+
+/* Small mobile screens */
+@media (max-width: 420px) {
+    .product-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .top-nav .nav-link {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .menu-section {
+        padding: 10px;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+
+    .category-card {
+        min-width: 120px;
+    }
+
+    .order-title {
+        font-size: 20px;
+    }
+
+    .modal-card {
+        padding: 14px;
+    }
+}

@@ -1,0 +1,20 @@
+/* Orders page: every order card has the same width and the same height. */
+.orders-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    grid-auto-rows: 1fr;
+    align-items: stretch !important;
+}
+.orders-grid > .order-card {
+    display: flex; flex-direction: column;
+    width: 100%; min-width: 0; height: 100%; box-sizing: border-box; overflow: hidden;
+}
+.orders-grid > .order-card > * { flex: none; min-width: 0; }
+/* the order list grid: one fixed height for all cards; a long item list scrolls inside the card */
+#ordersGrid.orders-grid > .order-card { height: 480px; }
+.orders-grid > .order-card > .order-card-details {
+    flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+}
+.orders-grid > .order-card > .order-card-footer { margin-top: auto; }
+@media (max-width: 600px) {
+    .orders-grid { grid-template-columns: 1fr !important; }
+}

@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: djc-food-products
+    runtime: docker
+    plan: free
+    healthCheckPath: /php/test.php
+    envVars:
+      # TiDB Cloud connection (Connect dialog > General)
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "4000"
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        value: djc_db
+      - key: DB_SSL
+        value: "true"
+      # Optional: Gmail SMTP for verification / password reset emails
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      # Optional: PayMongo checkout (leave out to use the manual GCash flow)
+      - key: PAYMONGO_SECRET_KEY
+        sync: false
+      - key: PAYMONGO_WEBHOOK_SECRET
+        sync: false

@@ -1,0 +1,174 @@
+/* Customer top bar (php/customer_header.php). Self-contained: no other stylesheet needed. */
+.cbar {
+    --cb-coffee: #3b261d; --cb-mocha: #70533f; --cb-cream: #fbf5ec; --cb-sand: #efe2d0;
+    --cb-line: #e6d5bf; --cb-berry: #b8433a; --cb-paper: #fffdf9; --cb-h: 70px;
+    position: sticky; top: 0; z-index: 120; height: var(--cb-h);
+    background: rgba(255, 253, 249, .94); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--cb-line);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--cb-coffee); line-height: 1.4;
+}
+.cbar *, .cbar *::before, .cbar *::after { box-sizing: border-box; }
+.cbar-inner {
+    max-width: 1180px; height: 100%; margin: 0 auto; padding: 0 24px;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px;
+}
+
+.cbar-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; justify-self: start; min-width: 0; }
+.cbar-mark {
+    width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center;
+    background: var(--cb-coffee); color: var(--cb-cream);
+    font: 800 14px/1 "Fraunces", Georgia, serif; letter-spacing: .5px;
+}
+.cbar-brand-text { font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--cb-mocha); white-space: nowrap; }
+
+.cbar-nav { display: flex; gap: 6px; }
+.cbar-link {
+    text-decoration: none; font-size: 14px; font-weight: 600; color: var(--cb-mocha);
+    padding: 8px 16px; border-radius: 999px; white-space: nowrap; transition: background .15s, color .15s;
+}
+.cbar-link:hover { background: var(--cb-sand); color: var(--cb-coffee); }
+.cbar-link.active { background: var(--cb-coffee); color: var(--cb-cream); }
+.cbar-link[data-store-link][aria-disabled="true"] { opacity: .45; }
+.cbar-link[data-store-link][aria-disabled="true"]:not(.active):hover { background: transparent; }
+.cbar-link:focus-visible, .cbar-icon-btn:focus-visible, .cbar-item:focus-visible, .cbar-btn:focus-visible,
+.cbar-brand:focus-visible, .cbar-panel-btn:focus-visible { outline: 2px solid var(--cb-coffee); outline-offset: 2px; }
+
+.cbar-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.cbar-menu { position: relative; }
+
+.cbar-icon-btn {
+    position: relative; width: 42px; height: 42px; display: grid; place-items: center; cursor: pointer;
+    border: 1.5px solid var(--cb-line); border-radius: 50%; background: transparent; color: var(--cb-coffee);
+    transition: background .15s, border-color .15s;
+}
+.cbar-icon-btn:hover, .cbar-icon-btn[aria-expanded="true"] { background: var(--cb-sand); border-color: #d3c3ad; }
+.cbar-icon-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.cbar-badge {
+    position: absolute; top: -4px; right: -4px; min-width: 19px; height: 19px; padding: 0 5px;
+    display: grid; place-items: center; border-radius: 999px; border: 2px solid var(--cb-paper);
+    background: var(--cb-berry); color: #fff; font-size: 11px; font-weight: 700; line-height: 1;
+}
+.cbar-badge[hidden] { display: none; }
+
+.cbar-panel {
+    position: absolute; top: calc(100% + 10px); right: 0; width: 230px; padding: 8px;
+    background: var(--cb-paper); border: 1px solid var(--cb-line); border-radius: 16px;
+    box-shadow: 0 14px 34px rgba(59, 38, 29, .16);
+}
+.cbar-panel[hidden] { display: none; }
+.cbar-panel-wide { width: 310px; }
+.cbar-panel-title { margin: 6px 10px 8px; font-size: 12px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--cb-mocha); }
+
+.cbar-who { display: flex; align-items: center; gap: 10px; padding: 8px 10px 12px; margin-bottom: 4px; border-bottom: 1px solid var(--cb-line); }
+.cbar-who strong { display: block; font-size: 14px; overflow-wrap: anywhere; }
+.cbar-who small { display: block; font-size: 12px; color: var(--cb-mocha); }
+.cbar-initials {
+    width: 38px; height: 38px; flex: none; border-radius: 50%; display: grid; place-items: center;
+    background: var(--cb-coffee); color: var(--cb-cream); font-size: 13px; font-weight: 700;
+}
+
+.cbar-item {
+    display: block; padding: 10px 12px; border-radius: 10px; text-decoration: none;
+    font-size: 14px; font-weight: 600; color: var(--cb-coffee);
+}
+.cbar-item:hover { background: var(--cb-sand); }
+.cbar-item.active { background: var(--cb-sand); }
+.cbar-logout { color: #8e2a22; }
+.cbar-logout:hover { background: #fde6e3; }
+
+.cbar-notes { list-style: none; margin: 0; padding: 0; max-height: 280px; overflow-y: auto; }
+.cbar-notes li { margin: 0; }
+.cbar-note {
+    display: flex; gap: 10px; align-items: flex-start; padding: 10px; border-radius: 10px;
+    text-decoration: none; color: var(--cb-coffee); font-size: 13.5px;
+}
+.cbar-note:hover { background: var(--cb-sand); }
+.cbar-note-dot { width: 9px; height: 9px; margin-top: 5px; flex: none; border-radius: 50%; background: #2e9d57; }
+.cbar-note small { display: block; color: var(--cb-mocha); font-size: 12px; }
+.cbar-empty { padding: 14px 10px 12px; font-size: 13.5px; color: var(--cb-mocha); text-align: center; }
+.cbar-panel-btn {
+    display: block; width: 100%; margin-top: 6px; padding: 9px; border: 0; border-radius: 10px; cursor: pointer;
+    background: var(--cb-sand); color: var(--cb-coffee); font: inherit; font-size: 13px; font-weight: 700;
+}
+.cbar-panel-btn:hover { background: #e6d5bf; }
+.cbar-panel-btn[hidden] { display: none; }
+
+.cbar-btn {
+    text-decoration: none; font-size: 14px; font-weight: 600; padding: 9px 18px; border-radius: 999px;
+    color: var(--cb-coffee); border: 1.5px solid var(--cb-line); transition: border-color .15s, background .15s;
+}
+.cbar-btn:hover { border-color: var(--cb-mocha); }
+/* Order Now is the one strong button in the bar; Sign up is an outline, Log in just text. */
+.cbar-btn-solid { background: var(--cb-coffee); border-color: var(--cb-coffee); color: var(--cb-cream); box-shadow: 0 4px 12px rgba(59, 38, 29, .22); }
+.cbar-btn-solid:hover { background: #55372a; border-color: #55372a; }
+.cbar-btn-solid[aria-disabled="true"] { background: rgba(59, 38, 29, .45); border-color: transparent; box-shadow: none; cursor: not-allowed; }
+.cbar-btn-text { border-color: transparent; padding-left: 10px; padding-right: 10px; color: var(--cb-mocha); }
+.cbar-btn-text:hover { border-color: transparent; background: var(--cb-sand); color: var(--cb-coffee); }
+.cbar-btn-outline { background: transparent; }
+.cbar-btn-outline:hover { background: var(--cb-sand); }
+
+/* Real logo (image/logo.svg|webp|png) replaces the text circle */
+.cbar-logo { height: 46px; width: auto; max-width: 150px; flex: none; object-fit: contain; display: block; }
+
+/* Cart */
+.cbar-cart { text-decoration: none; }
+.cbar-cart[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
+.cbar-cart.is-bump { animation: cbar-bump .45s ease; }
+.cbar-badge.is-bump { animation: cbar-pop .45s ease; }
+@keyframes cbar-bump { 30% { transform: scale(1.18) rotate(-6deg); } 60% { transform: scale(.96) rotate(3deg); } }
+@keyframes cbar-pop  { 40% { transform: scale(1.45); } }
+
+/* ---- Menu page: the bar sits above the menu + order panel ---- */
+body[data-menu-page="open"] .app-layout { height: calc(100vh - var(--cb-h, 70px)); min-height: 0; }
+body[data-menu-page="open"] .app-layout .order-sidebar { height: 100%; top: 0; }
+body[data-menu-page="open"] .cbar { --cb-h: 70px; }
+
+@media (max-width: 760px) {
+    .cbar-inner { padding: 0 12px; gap: 8px; grid-template-columns: auto 1fr auto; }
+    .cbar-brand-text { display: none; }
+    .cbar-nav { justify-content: center; gap: 2px; }
+    .cbar-link { padding: 8px 12px; font-size: 13px; }
+    .cbar-icon-btn { width: 40px; height: 40px; }
+    .cbar-panel-wide { width: min(310px, calc(100vw - 24px)); }
+    .cbar-btn { padding: 8px 12px; font-size: 13px; }
+    .cbar-order { display: none; }            /* the Menu link is right there; keep the bar light on phones */
+}
+@media (max-width: 480px) {
+    /* Keep "Log in" visible on phones: compact, so cart + Log in + Sign up fit on one row */
+    .cbar-btn-text { padding-left: 8px; padding-right: 8px; white-space: nowrap; }
+    .cbar-btn-outline { white-space: nowrap; }
+    .cbar-actions { gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) { .cbar-cart.is-bump, .cbar-badge.is-bump { animation: none; } }
+@media (max-width: 960px) {
+    /* the page stacks on tablets/phones, so let it scroll normally */
+    body[data-menu-page="open"] .app-layout { height: auto; min-height: calc(100vh - var(--cb-h, 70px)); }
+}
+
+/* Payment reminders (unpaid GCash orders): bell dots and pop-ups */
+.cbar-note-dot.is-warn { background: #e0a100; }
+.cbar-note-dot.is-late { background: #b42318; }
+
+.pay-toasts {
+    position: fixed; z-index: 120; top: 80px; right: 16px; display: flex; flex-direction: column; gap: 10px;
+    width: min(92vw, 380px);
+}
+.pay-toast {
+    display: flex; align-items: flex-start; gap: 10px; padding: 14px 12px 14px 16px; border-radius: 14px;
+    background: #fff4e0; color: #5b3a12; border: 1px solid #ecc98a; box-shadow: 0 14px 34px rgba(0, 0, 0, .22);
+    animation: pay-toast-in .35s ease;
+}
+.pay-toast.is-late { background: #fdecea; color: #7a1f1a; border-color: #e8b4ae; }
+.pay-toast-body { flex: 1; min-width: 0; font-size: 13.5px; line-height: 1.4; }
+.pay-toast-body strong { display: block; margin-bottom: 3px; font-size: 14.5px; }
+.pay-toast-link {
+    align-self: center; flex: none; padding: 7px 14px; border-radius: 999px; background: #3b261d; color: #fff;
+    font-weight: 700; font-size: 13px; text-decoration: none;
+}
+.pay-toast-close { flex: none; background: none; border: none; color: inherit; font-size: 22px; line-height: 1; cursor: pointer; opacity: .7; }
+.pay-toast-close:hover { opacity: 1; }
+@keyframes pay-toast-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+@media (max-width: 600px) { .pay-toasts { top: 70px; right: 8px; left: 8px; width: auto; } }
+@media (prefers-reduced-motion: reduce) { .pay-toast { animation: none; } }

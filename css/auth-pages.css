@@ -1,0 +1,77 @@
+/* ==========================================================================
+   D&JC sign-in pages (login, create account, forgot / reset password, verify e-mail)
+   Load AFTER login.css. Same look as the rest of the system.
+   ========================================================================== */
+:root { --au-bg:#f4efe8; --au-surface:#fffdf9; --au-line:#e6dccd; --au-ink:#2b1b14; --au-muted:#6b5a50;
+        --au-coffee:#3b261d; --au-mocha:#5a3d2e; --au-caramel:#c98a4b; --au-link:#8f5a24;
+        --au-bad:#b3261e; --au-bad-bg:#fdecea; --au-ok:#1f7a46; --au-ok-bg:#e6f4ec; }
+* { font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+body { background: var(--au-bg); color: var(--au-ink); -webkit-font-smoothing: antialiased; padding: 24px 0; }
+
+.login-card {
+    max-width: 440px; padding: 36px 34px; background: var(--au-surface); border: 1px solid var(--au-line); border-radius: 20px;
+    box-shadow: 0 1px 2px rgba(59,38,29,.05), 0 14px 36px rgba(59,38,29,.09);
+}
+.login-card.wide { max-width: 520px; }
+
+/* brand: mark on the left, name on the right */
+.brand { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-items: center; width: max-content; max-width: 100%; margin: 0 auto 26px; text-align: left; }
+.brand-logo {
+    grid-row: 1 / span 2; width: 60px; height: 60px; line-height: 60px; border: 0; border-radius: 16px;
+    background: var(--au-caramel); color: var(--au-coffee); font: 700 17px/60px "Fraunces", Georgia, serif; letter-spacing: -.02em; text-align: center;
+}
+.brand-tagline { margin: 0; align-self: end; font: 600 20px/1.15 "Fraunces", Georgia, serif; letter-spacing: 0; color: var(--au-coffee); }
+.brand-sub { margin: 2px 0 0; align-self: start; font-size: 13px; color: var(--au-muted); }
+
+.page-title { margin: 0 0 6px; text-align: center; font: 600 26px/1.2 "Fraunces", Georgia, serif; color: var(--au-coffee); }
+.page-desc { margin: 0 0 22px; text-align: center; font-size: 14.5px; line-height: 1.5; color: var(--au-muted); }
+
+/* fields */
+.field { margin-bottom: 16px; }
+.field-label { display: block; margin: 0 0 6px; font-size: 13.5px; font-weight: 600; color: var(--au-ink); }
+.input-group {
+    gap: 8px; min-height: 48px; margin-bottom: 16px; padding: 0 14px;
+    background: #fff; border: 1px solid var(--au-line); border-radius: 12px;
+}
+.field .input-group { margin-bottom: 0; }
+.input-group:focus-within { border-color: var(--au-caramel); box-shadow: 0 0 0 3px rgba(201,138,75,.25); }
+.input-group input { min-height: 46px; font-size: 15px; color: var(--au-ink); }
+.input-group input::placeholder { color: #8a7b70; }
+.input-group input:focus-visible { outline: none !important; }
+.field .input-group.invalid { border-color: var(--au-bad); background: #fffafa; box-shadow: none; }
+.input-group .toggle-pw { min-height: 44px; padding: 0 4px; color: var(--au-link); font-size: 13.5px; font-weight: 600; }
+.field-hint { margin: 6px 0 0; font-size: 12.5px; color: var(--au-muted); }
+.field-error { margin: 6px 0 0; font-size: 13px; color: var(--au-bad); }
+
+.login-links-row { margin: -6px 0 0; }
+.auth-link { font-size: 14px; font-weight: 500; color: var(--au-link); text-decoration: none; }
+.auth-link:hover { text-decoration: underline; color: var(--au-coffee); }
+.auth-link.strong { font-weight: 700; color: var(--au-link); }
+.auth-switch { margin-top: 22px; font-size: 14px; color: var(--au-muted); }
+
+.login-actions { margin-top: 22px; }
+.btn-login {
+    min-height: 50px; padding: 0 16px; border-radius: 12px; background: var(--au-coffee); color: #fff7ec;
+    font-size: 15.5px; font-weight: 700; letter-spacing: 0; transition: background-color .15s ease;
+}
+.btn-login:hover { background: var(--au-mocha); }
+.btn-login:focus-visible { outline: 2px solid var(--au-caramel) !important; outline-offset: 2px !important; }
+
+.login-error, .login-success { margin-bottom: 16px; padding: 11px 14px; border-radius: 10px; font-size: 14px; line-height: 1.45; text-align: left; }
+.login-error { background: var(--au-bad-bg); color: var(--au-bad); }
+.login-success { background: var(--au-ok-bg); color: var(--au-ok); }
+
+.terms-row { margin: 8px 0 0; font-size: 14px; color: var(--au-ink); align-items: center; }
+.terms-row input { width: 18px; height: 18px; margin-top: 0; accent-color: var(--au-coffee); }
+.terms-row a { color: var(--au-link); font-weight: 600; }
+.terms-modal { background: rgba(43,27,20,.52); }
+.terms-box { background: var(--au-surface); border: 1px solid var(--au-line); border-radius: 18px; box-shadow: 0 24px 64px rgba(43,27,20,.3); }
+.terms-box h2 { font: 600 22px/1.2 "Fraunces", Georgia, serif; color: var(--au-coffee); }
+.terms-content { font-size: 14px; color: var(--au-ink); }
+.terms-content h3 { margin: 16px 0 4px; font-size: 14px; color: var(--au-coffee); }
+
+@media (max-width: 480px) { .login-card { padding: 28px 20px; border-radius: 18px; } body { padding: 12px 0; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* "Resend confirmation email" row sits above the form: give it room */
+.login-card .auth-switch + form { margin-top: 16px; }

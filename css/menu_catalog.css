@@ -1,0 +1,38 @@
+/* =====================================================================
+   Admin Menu = catalog only (no cart). Header buttons, note, Add Category dialog.
+   ===================================================================== */
+
+.menu-header-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.add-menu-category-btn {
+    min-height: 44px; padding: 0 18px; border: 1px solid var(--ad-coffee, #3b261d); border-radius: 10px;
+    background: transparent; color: var(--ad-coffee, #3b261d); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.add-menu-category-btn:hover { background: var(--ad-tint, #f3e9dc); }
+.add-menu-category-btn:focus-visible { outline: 2px solid #8f5a24; outline-offset: 2px; }
+
+.menu-catalog-note { margin: -4px 0 16px; max-width: 70ch; font-size: 14px; line-height: 1.5; color: #6b5a4c; }
+.menu-empty-note { grid-column: 1 / -1; color: #6b5a4c; }
+
+/* With no cart, the product grid has the whole width. */
+.app-layout.catalog-only .main-content { max-width: none; }
+
+.add-category-modal { max-width: 520px; }
+.add-category-modal .form-modal-body { padding-bottom: 8px; }
+
+.add-category-modal .category-food-option {
+    display: flex; flex-direction: row; align-items: flex-start; gap: 12px; margin-top: 14px; padding: 12px 14px;
+    background: #faf5ec; border: 1px solid #ead9bd; border-radius: 12px; cursor: pointer;
+}
+.add-category-modal .category-food-option input[type="checkbox"] {
+    flex: none; width: 18px; height: 18px; min-height: 0; margin: 3px 0 0; padding: 0; accent-color: #3b261d;
+}
+.add-category-modal .category-food-option > span { display: block; flex: 1; min-width: 0; }
+.category-food-option strong { display: block; font-size: 14px; }
+.category-food-option small { display: block; margin-top: 2px; font-size: 12.5px; line-height: 1.4; color: #6b5a4c; }
+
+.existing-categories { margin-top: 16px; }
+.existing-categories-title { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: #6b5a4c; }
+.existing-categories ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.existing-categories li { padding: 5px 12px; border-radius: 999px; background: #f1ebe2; font-size: 13px; color: #3b261d; }
+.existing-categories li small { margin-left: 4px; color: #8a5a00; font-weight: 600; }

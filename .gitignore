@@ -1,0 +1,20 @@
+# Real secrets - never commit these (only the *.sample.php files are tracked)
+php/private/*.php
+!php/private/*.sample.php
+php/mail_config.php
+php/db_config.php
+php/paymongo_config.php
+.env
+
+# Runtime files
+php/logs/*
+!php/logs/.htaccess
+!php/logs/.keep
+uploads/gcash/*
+!uploads/gcash/.gitkeep
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

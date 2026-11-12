@@ -1,0 +1,13 @@
+.log-intro { margin: 0 0 16px; color: #666; font-size: 14px; }
+.log-dates { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.log-dates label { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #333; }
+.log-dates input[type="date"] { min-height: 38px; padding: 6px 10px; border: 1px solid #c9b477; border-radius: 8px; font: inherit; background: #fff; }
+.log-types { margin-bottom: 16px; }
+.log-table th.num, .log-table td.num { text-align: right; white-space: nowrap; }
+.log-type { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.log-type.pos { background: #dcfce7; color: #166534; }
+.log-type.neg { background: #fee2e2; color: #991b1b; }
+.log-table td.chg { font-weight: 700; }
+.log-table td.chg.pos { color: #166534; }
+.log-table td.chg.neg { color: #b91c1c; }
+@media (max-width: 760px) { .log-table td.num { text-align: left; } .log-table td.num { justify-content: space-between; } }

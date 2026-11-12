@@ -1,0 +1,194 @@
+/* ==========================================================================
+   D&JC form dialogs: Add / Edit Inventory (inventory.php) and Add / Edit Product (order.php).
+   Load AFTER the page theme (admin-theme.css or pos-theme.css) and before a11y.css.
+   ========================================================================== */
+
+:root {
+    --fm-line: var(--ad-line, #e6dccd); --fm-tint: var(--ad-tint, #faf5ec); --fm-surface: var(--ad-surface, #fffdf9);
+    --fm-ink: var(--ad-ink, #2b1b14); --fm-muted: var(--ad-muted, #6b5a50); --fm-coffee: var(--ad-coffee, #3b261d);
+    --fm-mocha: var(--ad-mocha, #5a3d2e); --fm-caramel: var(--ad-caramel, #c98a4b);
+    --fm-bad: var(--ad-bad, #b3261e); --fm-bad-bg: var(--ad-bad-bg, #fdecea);
+}
+
+/* ---------- the dialog shell: header / scrolling body / sticky footer ---------- */
+body .form-modal {
+    --fm-w: 560px;
+    display: flex; flex-direction: column; padding: 0; text-align: left;
+    width: min(94vw, var(--fm-w)); max-width: none; max-height: min(92vh, 920px); overflow: hidden;
+    background: var(--fm-surface); border: 1px solid var(--fm-line); border-radius: 18px;
+    box-shadow: 0 24px 64px rgba(43,27,20,.3);
+}
+body .form-modal.product-form-modal { --fm-w: 920px; }
+.form-modal > form { display: flex; flex-direction: column; min-height: 0; flex: 1 1 auto; margin: 0; }
+
+.form-modal-head {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    padding: 22px 28px 16px; border-bottom: 1px solid var(--fm-line);
+}
+body .form-modal-head h2 { margin: 0; font: 600 24px/1.2 var(--ad-display, "Fraunces", Georgia, serif); color: var(--fm-coffee); text-align: left; }
+.modal-sub { margin: 6px 0 0; color: var(--fm-muted); font-size: 14px; line-height: 1.45; }
+.modal-x {
+    flex: 0 0 auto; width: 40px; height: 40px; margin: -4px -8px 0 0; display: grid; place-items: center; padding: 0;
+    border: 0; border-radius: 10px; background: transparent; color: var(--fm-muted); cursor: pointer;
+}
+.modal-x:hover { background: var(--fm-tint); color: var(--fm-ink); }
+.modal-x svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+.form-modal-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 22px 28px; display: flex; flex-direction: column; gap: 26px; }
+.form-modal-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+    padding: 14px 28px; border-top: 1px solid var(--fm-line); background: var(--fm-tint);
+}
+.form-modal-foot .foot-actions { display: flex; gap: 10px; margin-left: auto; }
+body .form-modal-foot .btn-cancel, body .form-modal-foot .cancel-btn,
+body .form-modal-foot .btn-confirm, body .form-modal-foot .confirm-btn { min-height: 46px; margin: 0; }
+
+/* ---------- sections and fields ---------- */
+.form-section { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+body .form-section > h3 { margin: 0; font: 600 15px/1.3 var(--ad-font, "Inter", system-ui, sans-serif); color: var(--fm-coffee); text-align: left; }
+.form-section > .section-note { margin: -8px 0 0; color: var(--fm-muted); font-size: 13.5px; line-height: 1.45; }
+.form-grid { display: grid; gap: 14px; }
+.form-grid.two { grid-template-columns: 1fr 1fr; }
+.product-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 36px; align-items: start; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+body .form-modal label { display: block; margin: 0; font-size: 13.5px; font-weight: 600; color: var(--fm-ink); }
+.req { color: var(--fm-bad); margin-left: 2px; }
+.field-hint { margin: 0; color: var(--fm-muted); font-size: 13px; line-height: 1.4; }
+
+body .form-modal input[type="text"], body .form-modal input[type="number"], body .form-modal input[type="date"],
+body .form-modal select, body .form-modal textarea {
+    width: 100%; min-height: 46px; margin: 0; padding: 0 12px; box-sizing: border-box;
+    border: 1px solid var(--fm-line); border-radius: 10px; background: #fff; color: var(--fm-ink); font-size: 15px;
+}
+body .form-modal input:focus, body .form-modal select:focus, body .form-modal textarea:focus { border-color: var(--fm-caramel); }
+body .form-modal input:user-invalid, body .form-modal select:user-invalid { border-color: var(--fm-bad); background: #fffafa; }
+body .form-modal input:disabled { background: #f3ede3; color: #9a8b7e; cursor: not-allowed; }
+.input-with-unit { position: relative; }
+.input-with-unit input { padding-right: 64px; }
+.unit-suffix { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--fm-muted); font-size: 14px; pointer-events: none; }
+.unit-suffix:empty { display: none; }
+
+/* inline error / status line (product form) */
+.add-menu-message { margin: 0; flex: 1 1 260px; font-size: 14px; font-weight: 500; line-height: 1.4; }
+.add-menu-message:empty { display: none; }
+.add-menu-message:not(:empty) { padding: 9px 12px; border-radius: 10px; background: var(--fm-bad-bg); color: var(--fm-bad); }
+
+/* ---------- Product form: image ---------- */
+.image-field { display: flex; align-items: center; gap: 16px; }
+.form-modal .edit-menu-image-preview {
+    flex: 0 0 112px; width: 112px; height: 112px; margin: 0; padding: 8px; box-sizing: border-box;
+    display: grid; place-items: center; overflow: hidden; text-align: center;
+    border: 1.5px dashed #d3c3ad; border-radius: 14px; background: var(--fm-tint);
+    color: var(--fm-muted); font-size: 12.5px; line-height: 1.3;
+}
+.form-modal .edit-menu-image-preview img { width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
+.image-field .image-field-controls { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.form-modal input[type="file"] { width: 100%; font-size: 13.5px; color: var(--fm-muted); min-height: 0; border: 0; padding: 0; background: none; }
+.form-modal input[type="file"]::file-selector-button {
+    margin-right: 10px; min-height: 40px; padding: 0 14px; border: 1px solid var(--fm-line); border-radius: 10px;
+    background: var(--fm-surface); color: var(--fm-ink); font: 600 13.5px var(--ad-font, "Inter", sans-serif); cursor: pointer;
+}
+.form-modal input[type="file"]::file-selector-button:hover { background: var(--fm-tint); }
+
+/* ---------- Product form: sizes switch + size prices ---------- */
+.add-menu-sizes-toggle { display: flex; flex-direction: column; gap: 6px; padding: 14px; border: 1px solid var(--fm-line); border-radius: 12px; background: var(--fm-tint); }
+body .form-modal .add-menu-sizes-toggle label { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 15px; font-weight: 600; }
+.add-menu-sizes-toggle p { margin: 0; color: var(--fm-muted); font-size: 13px; line-height: 1.45; }
+.form-modal #addMenuHasSizes {
+    -webkit-appearance: none; appearance: none; flex: 0 0 46px; width: 46px; height: 26px; min-height: 0; margin: 0; padding: 0;
+    border: 0; border-radius: 999px; background: #d3c3ad; position: relative; cursor: pointer; transition: background-color .15s ease;
+}
+.form-modal #addMenuHasSizes::after {
+    content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%;
+    background: #fff; box-shadow: 0 1px 3px rgba(43,27,20,.35); transition: transform .15s ease;
+}
+.form-modal #addMenuHasSizes:checked { background: var(--fm-coffee); }
+.form-modal #addMenuHasSizes:checked::after { transform: translateX(20px); }
+
+.add-menu-sizes-panel { display: flex; flex-direction: column; gap: 10px; }
+.add-menu-sizes-panel[hidden] { display: none; }
+.add-menu-sizes-panel h3 { margin: 0; font: 600 15px var(--ad-font, "Inter", sans-serif); color: var(--fm-coffee); }
+.add-menu-sizes-panel > p { margin: -4px 0 2px; color: var(--fm-muted); font-size: 13px; }
+.add-menu-size-row { display: grid; grid-template-columns: 130px 1fr; gap: 12px; align-items: center; }
+body .form-modal .size-check { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 12px; border: 1px solid var(--fm-line); border-radius: 10px; background: #fff; cursor: pointer; font-size: 14.5px; }
+.form-modal .size-check input[type="checkbox"], .form-modal .edit-menu-ingredient-row input[type="checkbox"] {
+    -webkit-appearance: none; appearance: none; width: 20px; height: 20px; min-height: 0; margin: 0; padding: 0; flex: 0 0 20px;
+    border: 1.5px solid #b9a58d; border-radius: 6px; background: #fff; display: grid; place-items: center; cursor: pointer;
+}
+.form-modal .size-check input[type="checkbox"]:checked { background: var(--fm-coffee); border-color: var(--fm-coffee); }
+.form-modal .size-check input[type="checkbox"]:checked::after {
+    content: ""; width: 10px; height: 6px; border-left: 2px solid #fff7ec; border-bottom: 2px solid #fff7ec; transform: translateY(-1px) rotate(-45deg);
+}
+.form-modal .size-check:has(input:checked) { border-color: var(--fm-coffee); background: var(--fm-tint); }
+
+/* ---------- Product form: ingredients (recipe) ---------- */
+.form-modal .edit-menu-ingredients { display: flex; flex-direction: column; gap: 12px; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+body .edit-menu-ingredients > h3 { margin: 0; font: 600 15px var(--ad-font, "Inter", sans-serif); color: var(--fm-coffee); text-align: left; }
+.edit-menu-ingredients > p { margin: -6px 0 0; color: var(--fm-muted); font-size: 13.5px; line-height: 1.45; max-width: 70ch; }
+#addMenuIngredientsList { display: flex; flex-direction: column; gap: 10px; }
+.form-modal .edit-menu-ingredient-row {
+    display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) auto; gap: 12px; align-items: end;
+    padding: 14px; border: 1px solid var(--fm-line); border-radius: 12px; background: var(--fm-surface);
+}
+.form-modal .edit-menu-ingredient-row > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.qty-with-unit { display: flex; align-items: stretch; }
+.qty-with-unit[hidden] { display: none; }
+.form-modal .qty-with-unit input { border-top-right-radius: 0; border-bottom-right-radius: 0; flex: 1 1 auto; min-width: 0; }
+.unit-hint {
+    display: inline-flex; align-items: center; padding: 0 12px; border: 1px solid var(--fm-line); border-left: 0;
+    border-radius: 0 10px 10px 0; background: var(--fm-tint); color: var(--fm-muted); font-size: 13.5px; white-space: nowrap;
+}
+.qty-per-size { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.qty-per-size[hidden], .size-qty[hidden] { display: none; }
+.size-qty { display: flex; flex-direction: column; gap: 4px; }
+.size-qty-name { font-size: 13px; font-weight: 600; color: var(--fm-muted); }
+.sizes-on .form-modal .edit-menu-ingredient-row { grid-template-columns: minmax(0, 1fr) auto; }
+.sizes-on .form-modal .edit-menu-ingredient-row .qty-field { grid-column: 1 / -1; grid-row: 2; }
+.form-modal .edit-menu-remove-ingredient {
+    min-height: 46px; padding: 0 14px; border: 1px solid #efc9c5; border-radius: 10px; background: var(--fm-surface);
+    color: var(--fm-bad); font-size: 13.5px; font-weight: 600; cursor: pointer;
+}
+.form-modal .edit-menu-remove-ingredient:hover { background: var(--fm-bad-bg); }
+.add-menu-empty { margin: 0; padding: 18px; border: 1px dashed #d3c3ad; border-radius: 12px; color: var(--fm-muted); font-size: 14px; text-align: center; }
+.form-modal .add-menu-ingredient-btn {
+    width: 100%; min-height: 48px; border: 1.5px dashed #c4ad8f; border-radius: 12px; background: transparent;
+    color: var(--fm-coffee); font-size: 14.5px; font-weight: 600; cursor: pointer;
+}
+.form-modal .add-menu-ingredient-btn:hover { background: var(--fm-tint); border-color: var(--fm-caramel); }
+
+/* ---------- small screens: full-width sheet, one column ---------- */
+@media (max-width: 820px) {
+    .product-form-grid { grid-template-columns: 1fr; gap: 22px; }
+}
+@media (max-width: 640px) {
+    body .form-modal { width: 100vw; max-height: 100dvh; height: 100dvh; border-radius: 0; border: 0; }
+    .form-modal-head, .form-modal-body, .form-modal-foot { padding-left: 18px; padding-right: 18px; }
+    .form-grid.two { grid-template-columns: 1fr; }
+    .form-modal .edit-menu-ingredient-row { grid-template-columns: 1fr; }
+    .form-modal .edit-menu-remove-ingredient { width: 100%; }
+    .add-menu-size-row { grid-template-columns: 1fr; }
+    .qty-per-size { grid-template-columns: 1fr; }
+    .form-modal-foot .foot-actions { width: 100%; }
+    .form-modal-foot .foot-actions > * { flex: 1 1 0; }
+}
+
+/* the Inventory form carries older id-based rules (#productForm ...); match their weight so spacing is consistent */
+body .form-modal #productForm label { margin: 0; display: block; font-size: 13.5px; font-weight: 600; }
+body .form-modal #productForm :is(input:not([type="hidden"]), select, textarea) {
+    margin: 0; width: 100%; min-height: 46px; padding: 0 12px; box-sizing: border-box;
+    border: 1px solid var(--fm-line); border-radius: 10px; background: #fff; color: var(--fm-ink); font-size: 15px;
+}
+body .form-modal #productForm .input-with-unit input { padding-right: 64px; }
+body .form-modal #productForm :is(input, select):focus { border-color: var(--fm-caramel); }
+
+/* Add / Edit Staff dialog */
+body .form-modal.staff-modal { --fm-w: 520px; }
+.form-alert { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--fm-bad-bg); color: var(--fm-bad); font-size: 14px; line-height: 1.45; }
+.form-alert[hidden] { display: none; }
+.staff-info { padding: 14px 16px; border: 1px solid var(--fm-line); border-radius: 12px; background: var(--fm-tint); }
+.staff-info[hidden], #staffEditFields[hidden] { display: none; }
+#staffEditFields { display: flex; flex-direction: column; gap: 18px; }
+body .staff-info h3 { margin: 0 0 8px; font: 600 14px/1.3 var(--ad-font, "Inter", system-ui, sans-serif); color: var(--fm-coffee); }
+.staff-info ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 13.5px; line-height: 1.5; color: var(--fm-ink); }
+.staff-info .username-preview { font: 700 14px/1 Consolas, Menlo, monospace; padding: 2px 8px; border-radius: 6px; background: #fff; border: 1px solid var(--fm-line); }
+.staff-info .staff-info-note { display: block; margin-top: 2px; color: var(--fm-muted); font-size: 12.5px; }

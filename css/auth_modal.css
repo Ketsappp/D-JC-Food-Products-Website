@@ -1,0 +1,182 @@
+/* =====================================================================
+   Login / Create an Account pop-up (landing page)
+   Centered card over a blurred, dimmed page. Everything is prefixed "am-"
+   so it cannot clash with the rest of the site.
+   ===================================================================== */
+
+html.am-locked { overflow: hidden; }
+
+.am-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    display: none; align-items: center; justify-content: center;
+    padding: 16px;
+    background: rgba(43, 27, 20, .45);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+/* No fade on the overlay itself: animating the opacity of a blurred layer makes the browser re-blur
+   the page on every frame. The card still pops in (am-pop), which is cheap. */
+.am-overlay.is-open { display: flex; }
+
+.am-overlay [hidden],
+.am-terms-modal[hidden] { display: none !important; }
+
+.am-dialog {
+    position: relative;
+    width: 100%; max-width: 440px;
+    max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px);
+    overflow-y: auto; overscroll-behavior: contain;
+    background: var(--paper, #fffdf9);
+    color: var(--coffee, #3b261d);
+    border: 1px solid var(--line, #e6d5bf);
+    border-radius: 24px;
+    padding: 34px 34px 28px;
+    box-shadow: 0 24px 70px rgba(30, 15, 8, .35);
+    font-family: var(--sans, "Inter", system-ui, sans-serif);
+    animation: am-pop .26s cubic-bezier(.2, .8, .25, 1) both;
+}
+.am-dialog:focus { outline: none; }
+
+@keyframes am-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes am-pop  { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+
+.am-close {
+    position: absolute; top: 12px; right: 14px;
+    width: 36px; height: 36px; display: grid; place-items: center;
+    border-radius: 50%; text-decoration: none;
+    font-size: 26px; line-height: 1; color: var(--mocha, #70533f);
+    transition: background .15s, color .15s;
+}
+.am-close:hover { background: var(--sand, #efe2d0); color: var(--coffee, #3b261d); }
+
+/* ---------- Brand ---------- */
+.am-brand { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-bottom: 18px; }
+.am-brand-logo {
+    display: grid; place-items: center;
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--coffee, #3b261d); color: var(--cream, #fbf5ec);
+    font-family: var(--serif, Georgia, serif); font-weight: 800; font-size: 20px; letter-spacing: .5px;
+}
+.am-brand-text { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--mocha, #70533f); }
+
+/* ---------- Titles ---------- */
+.am-title {
+    text-align: center; font-family: var(--serif, Georgia, serif);
+    font-size: 24px; font-weight: 800; letter-spacing: -.3px; margin-bottom: 4px;
+}
+.am-sub { text-align: center; font-size: 13.5px; color: var(--mocha, #70533f); margin-bottom: 18px; line-height: 1.5; }
+
+/* ---------- Messages ---------- */
+.am-alert { padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.45; text-align: center; margin-bottom: 14px; }
+.am-alert-error { background: #fdecea; color: #b3261e; }
+.am-alert-ok    { background: #e8f5ec; color: #1d6b3a; }
+.am-resend { text-align: center; margin: -4px 0 14px; }
+
+/* ---------- Form ---------- */
+.am-field { margin-bottom: 14px; }
+.am-label { display: block; font-size: 12px; font-weight: 600; color: var(--mocha, #70533f); margin: 0 0 6px 14px; }
+
+.am-input {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--sand, #efe2d0); border: 1.5px solid transparent;
+    border-radius: 999px; padding: 12px 20px;
+    transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.am-input:focus-within {
+    background: #fff; border-color: var(--caramel, #c98a4b);
+    box-shadow: 0 0 0 4px rgba(201, 138, 75, .18);
+}
+.am-input.is-invalid { border-color: #e57373; }
+.am-input input {
+    flex: 1; min-width: 0; border: none; outline: none; background: transparent;
+    font: inherit; font-size: 14px; color: var(--coffee, #3b261d);
+}
+.am-input input::placeholder { color: #a8927f; }
+
+.am-toggle-pw {
+    background: none; border: none; cursor: pointer; white-space: nowrap;
+    font: inherit; font-size: 12px; font-weight: 600; color: var(--mocha, #70533f);
+}
+.am-toggle-pw:hover { color: var(--coffee, #3b261d); }
+
+.am-hint { font-size: 12px; color: #9a8573; margin: 4px 0 0 14px; }
+.am-field-error { font-size: 12px; color: #b3261e; margin: 4px 0 0 14px; }
+
+.am-row-end { display: flex; justify-content: flex-end; margin: -4px 6px 0; }
+
+.am-link { font-size: 13px; color: var(--mocha, #70533f); text-decoration: none; }
+.am-link:hover { text-decoration: underline; color: var(--coffee, #3b261d); }
+.am-link.strong { font-weight: 700; color: var(--coffee, #3b261d); }
+
+.am-submit {
+    display: block; width: 100%; margin-top: 22px; padding: 14px;
+    border: none; border-radius: 999px; cursor: pointer;
+    background: var(--coffee, #3b261d); color: var(--cream, #fbf5ec);
+    font: inherit; font-weight: 700; font-size: 14px; letter-spacing: 1px;
+    transition: background .15s, transform .15s;
+}
+.am-submit:hover { background: #55372a; transform: translateY(-1px); }
+.am-submit:disabled { opacity: .6; cursor: wait; transform: none; }
+
+.am-switch { text-align: center; font-size: 13px; color: var(--mocha, #70533f); margin-top: 20px; }
+
+.am-terms { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--coffee, #3b261d); margin: 8px 6px 0; line-height: 1.45; }
+.am-terms input { margin-top: 3px; accent-color: var(--coffee, #3b261d); }
+.am-terms a { color: var(--coffee, #3b261d); font-weight: 700; }
+.am-terms ~ .am-field-error { margin-top: 6px; }
+#amRegisterClientError { margin: 12px 0 0; }
+
+/* ---------- Terms of Service (on top of the pop-up) ---------- */
+.am-terms-modal {
+    position: fixed; inset: 0; z-index: 1100;
+    display: flex; align-items: center; justify-content: center; padding: 16px;
+    background: rgba(43, 27, 20, .5);
+    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+}
+.am-terms-box {
+    width: 100%; max-width: 520px; max-height: 80vh; display: flex; flex-direction: column;
+    background: var(--paper, #fffdf9); color: var(--coffee, #3b261d);
+    border-radius: 22px; padding: 26px 26px 22px;
+    box-shadow: 0 24px 70px rgba(30, 15, 8, .35);
+    animation: am-pop .22s ease both;
+}
+.am-terms-box h2 { font-family: var(--serif, Georgia, serif); font-size: 20px; margin-bottom: 12px; }
+.am-terms-content { overflow-y: auto; font-size: 13px; color: #5b4636; line-height: 1.6; padding-right: 6px; }
+.am-terms-content h3 { font-size: 13px; margin: 14px 0 4px; color: var(--coffee, #3b261d); }
+.am-terms-box .am-submit { margin-top: 16px; }
+
+/* ---------- Small screens / motion ---------- */
+@media (max-width: 480px) {
+    .am-dialog { padding: 28px 20px 22px; border-radius: 20px; }
+    .am-title { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .am-overlay.is-open, .am-dialog, .am-terms-box { animation: none; }
+}
+/* Browsers without backdrop-filter: dim a little more instead of blurring. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .am-overlay { background: rgba(43, 27, 20, .72); }
+}
+
+/* ---------- Live sign-up checks ---------- */
+.am-input.is-valid { border-color: #5aa76f; }
+.am-input.is-checking { border-color: #d9b98f; }
+.am-field-status { font-size: 12px; color: #9a8573; margin: 4px 0 0 14px; }
+
+.am-pw-rules { list-style: none; margin: 8px 0 0 14px; padding: 0; display: grid; gap: 3px; font-size: 12px; color: #9a8573; }
+.am-pw-rules li { display: flex; align-items: center; gap: 7px; }
+.am-pw-rules li::before {
+    content: ""; flex: none; width: 14px; height: 14px; border-radius: 50%;
+    border: 1.5px solid #cdb9a2; background: transparent;
+}
+.am-pw-rules li.is-met { color: #1d6b3a; }
+.am-pw-rules li.is-met::before {
+    border-color: #2f8f55; background: #2f8f55 center / 9px no-repeat
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.5l2.3 2.3 4.7-5' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.am-pw-rules li.is-unmet { color: #b3261e; }
+.am-pw-rules li.is-unmet::before { border-color: #e57373; }
+
+
+/* Small helper text under a field (used by the "Set a new password" pop-up) */
+.am-hint { margin: 6px 0 0 14px; font-size: 12px; line-height: 1.45; color: var(--mocha, #70533f); }

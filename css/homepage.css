@@ -1,0 +1,235 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f8f8f8;
+    color: #111111;
+    overflow-x: hidden;
+}
+
+/* Main Layout Wrapper */
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 36px;
+    min-height: 100vh;
+}
+
+/* Top Navigation Bar */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.header-left, .header-right {
+    width: 120px; /* Balances layout spacing */
+}
+
+.header-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logo-circle {
+    width: 48px;
+    height: 48px;
+    background-color: #dcdcdc;
+    border-radius: 50%;
+}
+
+.top-nav {
+    display: flex;
+    gap: 28px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #111111;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.nav-link.active {
+    border-bottom: 2px solid #111111;
+    padding-bottom: 2px;
+}
+
+/* Account Dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-btn {
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111111;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #ffffff;
+    min-width: 150px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px);
+    transition: all 0.2s ease;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dropdown-content a:hover {
+    background-color: #f2f2f2;
+}
+
+.dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Featured Section Grid */
+.featured-products {
+    display: grid;
+    grid-template-columns: minmax(300px, 440px) 1fr;
+    align-items: center;
+    max-width: 1000px;
+    margin: 20px auto 0;
+    gap: 60px;
+}
+
+/* Carousel Card */
+.carousel-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #ffffff;
+    border: 1.5px solid #e2e2e2;
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.product-image-container {
+    width: 85%;
+    height: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Controls */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #f2f2f2;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    color: #111;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.arrow:hover {
+    background: #e0e0e0;
+}
+
+.left-arrow { left: 14px; }
+.right-arrow { right: 14px; }
+
+.carousel-dots {
+    position: absolute;
+    bottom: 18px;
+    display: flex;
+    gap: 8px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    background-color: #d1d1d1;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.dot.active {
+    background-color: #000000;
+}
+
+/* Product Details */
+.product-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.product-details h2 {
+    font-weight: 800;
+    font-size: 30px;
+    color: #000000;
+}
+
+.product-details p {
+    font-size: 15px;
+    color: #666666;
+    line-height: 1.5;
+}
+
+.order-btn {
+    display: inline-block;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 32px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.order-btn:hover {
+    background-color: #222222;
+}

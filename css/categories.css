@@ -1,0 +1,10 @@
+/* Category colour families, shared by the Home page and the Menu page.
+   A class like cat-pizza on a card, chip or button sets --cat (strong), --cat-soft (tint) and --cat-ink (text). */
+.cat-milktea { --cat: #8a5a3b; --cat-soft: #f3e4d6; --cat-ink: #5e3a22; }
+.cat-coffee  { --cat: #6f4a34; --cat-soft: #efe0d3; --cat-ink: #4a2f20; }
+.cat-shake   { --cat: #c0456f; --cat-soft: #fde4ed; --cat-ink: #8a2447; }
+.cat-soda    { --cat: #0f7f76; --cat-soft: #d9f2ee; --cat-ink: #0b5a53; }
+.cat-mango   { --cat: #a85f00; --cat-soft: #ffeec4; --cat-ink: #7a4500; }
+.cat-pizza   { --cat: #c0412a; --cat-soft: #fde3da; --cat-ink: #8a2614; }
+.cat-default { --cat: #a86d33; --cat-soft: #f6e4cb; --cat-ink: #7a4a17; }
+

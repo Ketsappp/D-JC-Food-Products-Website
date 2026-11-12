@@ -1,0 +1,75 @@
+@import url("brand.css?v=4");
+@import url("orders_uniform.css?v=1");
+/* ==========================================================================
+   D&JC accessibility layer. Load LAST on every page (after theme CSS).
+   Focus visibility, skip link, reduced motion, small icon helpers.
+   ========================================================================== */
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+[hidden] { display: none !important; }
+
+/* ---- visible keyboard focus everywhere (several stylesheets set outline:none) ---- */
+:focus-visible { outline: 2px solid #c98a4b !important; outline-offset: 2px !important; }
+.btn-primary:focus-visible, .btn-confirm:focus-visible, .confirm-btn:focus-visible,
+.add-menu-product-btn:focus-visible, .order-submit-btn:focus-visible { outline-color: #8f5a24 !important; }
+.sidebar :focus-visible { outline-color: #fff !important; outline-offset: -2px !important; }
+
+/* fields whose wrapper already draws the focus ring (avoid a double ring) */
+.am-input input:focus-visible,
+.currency-input-wrap input:focus-visible { outline: none !important; }
+
+/* containers focused by script (dialogs, <main> after "skip to content") should not show a ring */
+.modal-card:focus, .logout-modal-card:focus, .gcash-modal-content:focus, .am-dialog:focus,
+main:focus, [tabindex="-1"]:focus:not(:focus-visible) { outline: none !important; }
+
+/* ---- skip link ---- */
+.skip-link {
+    position: fixed; left: 12px; top: -64px; z-index: 100000;
+    padding: 12px 18px; border-radius: 10px;
+    background: #3b261d; color: #fff7ec; font: 600 14px/1.2 "Inter", system-ui, sans-serif;
+    text-decoration: none; box-shadow: 0 6px 20px rgba(43,27,20,.35);
+    transition: top .15s ease;
+}
+.skip-link:focus { top: 12px; }
+
+/* ---- screen-reader-only text (many pages already define .sr-only; this is the safe default) ---- */
+.sr-only {
+    position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* ---- clickable cards that are now keyboard-operable ---- */
+.product-card[role="button"], .payment-option-card[role="button"] { cursor: pointer; }
+.product-card[aria-disabled="true"] { cursor: not-allowed; }
+
+/* ---- SVG icons that replaced emoji ---- */
+.art-emoji svg, .chip-ico svg, .card-emoji svg, .ready-ico svg, .staff-avatar svg {
+    width: 1em; height: 1em; display: block; fill: none; stroke: currentColor;
+    stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+.art-emoji { color: #c98a4b; }
+.art-emoji svg { stroke-width: 1.2; }
+.staff-avatar svg { width: 55%; height: 55%; margin: auto; color: #6b5a50; }
+.a11y-ico-inline { width: 1.1em; height: 1.1em; vertical-align: -0.2em; margin-right: .3em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---- motion ---- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important; scroll-behavior: auto !important;
+    }
+}
+
+/* ---- Windows high-contrast mode: keep controls visible ---- */
+@media (forced-colors: active) {
+    .availability, .status-pill, .order-status, .stat-card, .product-card { border: 1px solid CanvasText; }
+    :focus-visible { outline: 3px solid Highlight !important; }
+}
+
+/* customer cart icon (was an emoji) */
+.collapsed-icon svg { width: 26px; height: 26px; display: block; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* dialogs that are hidden with opacity:0 only (POS + customer order pages): take closed ones out of the tab order
+   and the accessibility tree. Visibility flips instantly on open, and after the fade on close. */
+.a11y-fade-modals .modal-overlay:not(.show):not(.hidden) { visibility: hidden; transition: opacity .2s ease, visibility 0s linear .2s; }
+.a11y-fade-modals .modal-overlay.show { visibility: visible; }
