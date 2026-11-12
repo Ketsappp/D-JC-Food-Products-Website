@@ -20,7 +20,13 @@ if (getenv("DB_HOST")) {
     ]);
 }
 
-if (getenv("MAIL_USERNAME")) {
+if (getenv("BREVO_API_KEY")) {
+    write_cfg("$dir/mail_config.php", [
+        "brevo_api_key" => getenv("BREVO_API_KEY"),
+        "from_email"    => getenv("MAIL_FROM_EMAIL"),
+        "from_name"     => getenv("MAIL_FROM_NAME") ?: "D&JC Food Products",
+    ]);
+} elseif (getenv("MAIL_USERNAME")) {
     write_cfg("$dir/mail_config.php", [
         "host"       => getenv("MAIL_HOST") ?: "smtp.gmail.com",
         "port"       => (int) (getenv("MAIL_PORT") ?: 587),

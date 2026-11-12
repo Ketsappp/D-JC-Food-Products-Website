@@ -4,7 +4,8 @@
  *
  * SETUP (one time): copy  mail_config.sample.php  to
  *     C:/xampp/private/mail_config.php      (recommended - outside the web folder)
- * and fill in your SMTP details (e.g. Gmail + App Password).
+ * and fill in your SMTP details (e.g. Gmail + App Password), or set "brevo_api_key" to send
+ * through Brevo's HTTPS API instead (needed on hosts that block SMTP, such as Render's free tier).
  *
  * If no config file exists the system does NOT crash: the email is written to
  * php/logs/mail_outbox.log instead so you can still test locally.
@@ -26,7 +27,10 @@ function mail_config(): ?array
         foreach ([private_config_file("mail_config.php")] as $file) {
             if ($file !== null && is_file($file)) {
                 $loaded = require $file;
-                if (is_array($loaded) && !empty($loaded["username"]) && !empty($loaded["password"])) {
+                if (is_array($loaded) && (
+                    !empty($loaded["brevo_api_key"])
+                    || (!empty($loaded["username"]) && !empty($loaded["password"]))
+                )) {
                     $config = $loaded;
                 }
                 break;
@@ -65,6 +69,47 @@ function mail_layout(string $title, string $bodyHtml, string $buttonText = "", s
 }
 
 /**
+ * Sends through Brevo's HTTPS API (port 443). Used instead of SMTP on hosts that block SMTP ports.
+ */
+function send_via_brevo(array $config, string $toEmail, string $toName, string $subject, string $html, string $text): bool
+{
+    $payload = [
+        "sender"      => [
+            "email" => $config["from_email"] ?? "",
+            "name"  => $config["from_name"] ?? "D&JC Food Products",
+        ],
+        "to"          => [["email" => $toEmail, "name" => $toName !== "" ? $toName : $toEmail]],
+        "subject"     => $subject,
+        "htmlContent" => $html,
+        "textContent" => $text,
+    ];
+
+    $ch = curl_init("https://api.brevo.com/v3/smtp/email");
+    curl_setopt_array($ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 15,
+        CURLOPT_HTTPHEADER     => [
+            "accept: application/json",
+            "content-type: application/json",
+            "api-key: " . $config["brevo_api_key"],
+        ],
+        CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE),
+    ]);
+    $response = curl_exec($ch);
+    $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $error = curl_error($ch);
+    curl_close($ch);
+
+    if ($response === false || $status < 200 || $status >= 300) {
+        error_log("send_via_brevo failed (HTTP $status): " . ($error !== "" ? $error : (string) $response));
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * Sends one email. Returns true when it was sent (or logged in local mode).
  */
 function send_system_mail(string $toEmail, string $toName, string $subject, string $html, string $text): bool
@@ -82,6 +127,10 @@ function send_system_mail(string $toEmail, string $toName, string $subject, stri
             FILE_APPEND | LOCK_EX
         );
         return true;
+    }
+
+    if (!empty($config["brevo_api_key"])) {
+        return send_via_brevo($config, $toEmail, $toName, $subject, $html, $text);
     }
 
     try {

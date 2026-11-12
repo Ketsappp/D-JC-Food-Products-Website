@@ -18,10 +18,11 @@ services:
         value: djc_db
       - key: DB_SSL
         value: "true"
-      # Optional: Gmail SMTP for verification / password reset emails
-      - key: MAIL_USERNAME
+      # Emails (verification / password reset) via Brevo's HTTPS API.
+      # MAIL_FROM_EMAIL must be a sender you verified in Brevo.
+      - key: BREVO_API_KEY
         sync: false
-      - key: MAIL_PASSWORD
+      - key: MAIL_FROM_EMAIL
         sync: false
       # Optional: PayMongo checkout (leave out to use the manual GCash flow)
       - key: PAYMONGO_SECRET_KEY

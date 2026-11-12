@@ -18,7 +18,8 @@ PHP + MySQL ordering / POS system. Deployed on **Render** (Docker) with **TiDB C
 | `DB_USER` / `DB_PASSWORD` | from the TiDB Connect dialog |
 | `DB_NAME` | `djc_db` |
 | `DB_SSL` | `true` |
-| `MAIL_USERNAME` / `MAIL_PASSWORD` | optional - Gmail address + App Password |
+| `BREVO_API_KEY` / `MAIL_FROM_EMAIL` | optional - Brevo API key + a sender verified in Brevo (emails work on Render free) |
+| `MAIL_USERNAME` / `MAIL_PASSWORD` | optional - Gmail SMTP instead (blocked on Render's free tier) |
 | `PAYMONGO_SECRET_KEY` / `PAYMONGO_WEBHOOK_SECRET` | optional - turns PayMongo checkout on |
 
 4. PayMongo webhook URL: `https://<your-app>.onrender.com/php/paymongo_webhook.php`
